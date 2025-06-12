@@ -1,287 +1,83 @@
-// import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
-// import { FaUser, FaEnvelope, FaLock, FaArrowLeft, FaKey, FaCheck } from 'react-icons/fa';
-// import { motion } from 'framer-motion';
-// import { Container, Form, Button, FloatingLabel, Alert } from 'react-bootstrap';
-// import '../styles/Signup.css';
-
-// const SignupPage = () => {
-//   const [name, setName] = useState('');
-//   const [email, setEmail] = useState('');
-//   const [otp, setOtp] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [error, setError] = useState('');
-//   const [loading, setLoading] = useState(false);
-//   const [otpSent, setOtpSent] = useState(false);
-//   const [verified, setVerified] = useState(false);
-
-//   const handleSendOtp = () => {
-//     if (!email) {
-//       setError('Please enter your email first');
-//       return;
-//     }
-//     // Simulate OTP sending
-//     setLoading(true);
-//     setTimeout(() => {
-//       setOtpSent(true);
-//       setLoading(false);
-//       setError('');
-//     }, 1500);
-//   };
-
-//   const handleVerifyOtp = () => {
-//     if (!otp) {
-//       setError('Please enter the OTP');
-//       return;
-//     }
-//     // Simulate OTP verification
-//     setLoading(true);
-//     setTimeout(() => {
-//       setVerified(true);
-//       setLoading(false);
-//       setError('');
-//     }, 1000);
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     if (!verified) {
-//       setError('Please verify your email first');
-//       return;
-//     }
-//     if (password !== confirmPassword) {
-//       setError('Passwords do not match');
-//       return;
-//     }
-//     // Submit form
-//     setLoading(true);
-//     setTimeout(() => {
-//       console.log('Signup successful');
-//       setLoading(false);
-//     }, 2000);
-//   };
-
-//   return (
-//     <div className="signup-page">
-//       {/* Blurred background image */}
-//       <div className="background-image"></div>
-      
-//       <Container className="signup-container">
-//         <motion.div
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.5 }}
-//           className="signup-card"
-//         >
-//           <div className="signup-header">
-//             <Link to="/" className="back-home">
-//               <FaArrowLeft className="me-2" />
-//               Back to Home
-//             </Link>
-//             <h2 className="text-center mb-4">Create Your Account</h2>
-//           </div>
-
-//           {error && (
-//             <Alert variant="danger" onClose={() => setError('')} dismissible>
-//               {error}
-//             </Alert>
-//           )}
-
-//           <Form onSubmit={handleSubmit}>
-//             {/* Name Field */}
-//             <div className="form-group-wrapper">
-//               <FaUser className="input-icon" />
-//               <FloatingLabel controlId="name" label="Full Name" className="mb-3">
-//                 <Form.Control
-//                   type="text"
-//                   placeholder="John Doe"
-//                   value={name}
-//                   onChange={(e) => setName(e.target.value)}
-//                   className="input-field"
-//                   required
-//                 />
-//               </FloatingLabel>
-//             </div>
-
-//             {/* Email Field */}
-//             <div className="form-group-wrapper">
-//               <FaEnvelope className="input-icon" />
-//               <FloatingLabel controlId="email" label="Email address" className="mb-3">
-//                 <Form.Control
-//                   type="email"
-//                   placeholder="name@example.com"
-//                   value={email}
-//                   onChange={(e) => setEmail(e.target.value)}
-//                   className="input-field"
-//                   required
-//                   disabled={otpSent}
-//                 />
-//               </FloatingLabel>
-//             </div>
-
-//             {/* OTP Verification Section */}
-//             {otpSent && (
-//               <div className="otp-section mb-3">
-//                 <div className="form-group-wrapper">
-//                   <FaKey className="input-icon" />
-//                   <FloatingLabel controlId="otp" label="Enter OTP">
-//                     <Form.Control
-//                       type="text"
-//                       placeholder="123456"
-//                       value={otp}
-//                       onChange={(e) => setOtp(e.target.value)}
-//                       className="input-field"
-//                       disabled={verified}
-//                     />
-//                   </FloatingLabel>
-//                 </div>
-//                 {!verified ? (
-//                   <Button
-//                     variant="outline-primary"
-//                     className="w-100 verify-button"
-//                     onClick={handleVerifyOtp}
-//                     disabled={loading}
-//                   >
-//                     {loading ? 'Verifying...' : 'Verify OTP'}
-//                   </Button>
-//                 ) : (
-//                   <div className="verified-badge">
-//                     <FaCheck className="me-2" />
-//                     Email Verified
-//                   </div>
-//                 )}
-//               </div>
-//             )}
-
-//             {verified && (
-//               <>
-//                 <div className="form-group-wrapper">
-//                   <FaLock className="input-icon" />
-//                   <FloatingLabel controlId="password" label="Password" className="mb-3">
-//                     <Form.Control
-//                       type="password"
-//                       placeholder="Password"
-//                       value={password}
-//                       onChange={(e) => setPassword(e.target.value)}
-//                       className="input-field"
-//                       required
-//                     />
-//                   </FloatingLabel>
-//                 </div>
-//               </>
-//             )}
-//             {!otpSent && (
-//               <motion.div
-//                 whileHover={{ scale: 1.02 }}
-//                 whileTap={{ scale: 0.98 }}
-//                 className="mb-4"
-//               >
-//                 <Button
-//                   variant="outline-primary"
-//                   className="w-100 send-otp-button"
-//                   onClick={handleSendOtp}
-//                   disabled={loading}
-//                 >
-//                   {loading ? 'Sending...' : 'Send OTP'}
-//                 </Button>
-//               </motion.div>
-//             )}
-
-//             {/* Submit Button (only show after verification) */}
-//             {verified && (
-//               <motion.div
-//                 whileHover={{ scale: 1.02 }}
-//                 whileTap={{ scale: 0.98 }}
-//               >
-//                 <Button
-//                   variant="primary"
-//                   type="submit"
-//                   className="w-100 signup-button"
-//                   disabled={loading}
-//                 >
-//                   {loading ? 'Creating Account...' : 'Sign Up'}
-//                 </Button>
-//               </motion.div>
-//             )}
-//           </Form>
-
-//           <div className="signup-footer mt-4">
-//             <p className="text-center">
-//               Already have an account?{' '}
-//               <Link to="/Sign-In" className="login-link">
-//                 Log in
-//               </Link>
-//             </p>
-//           </div>
-//         </motion.div>
-//       </Container>
-//     </div>
-//   );
-// };
-
-// export default SignupPage;
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaUser, FaEnvelope, FaLock, FaArrowLeft, FaKey, FaCheck, FaArrowRight } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { generateOTP, verifyOTP, signup, resetAuthState, clearError } from "../redux/AuthSlice";
+import { Link, useNavigate } from "react-router-dom";
+import { FaUser, FaEnvelope, FaLock, FaArrowLeft, FaKey, FaArrowRight } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { Container, Form, Button, FloatingLabel, Alert } from 'react-bootstrap';
 import '../styles/Signup.css';
 
 const SignupPage = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [otp, setOtp] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
-  const [verified, setVerified] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1); // 1: Name/Email, 2: OTP, 3: Password
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading, error, otpSent, otpVerified, token } = useSelector((state) => state.auth);
 
-  const handleSendOtp = () => {
-    if (!email) {
-      setError('Please enter your email first');
-      return;
-    }
-    if (!name) {
-      setError('Please enter your name first');
-      return;
-    }
-    setLoading(true);
-    setTimeout(() => {
-      setOtpSent(true);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    otp: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [currentStep, setCurrentStep] = useState(1);
+
+  useEffect(() => {
+    dispatch(resetAuthState());
+  }, [dispatch]);
+  
+  // Step transition logic
+  useEffect(() => {
+    if (otpSent && currentStep === 1) {
       setCurrentStep(2);
-      setLoading(false);
-      setError('');
-    }, 1500);
-  };
-
-  const handleVerifyOtp = () => {
-    if (!otp) {
-      setError('Please enter the OTP');
-      return;
     }
-    setLoading(true);
-    setTimeout(() => {
-      setVerified(true);
+
+    if (otpVerified && currentStep === 2) {
       setCurrentStep(3);
-      setLoading(false);
-      setError('');
-    }, 1000);
+    }
+
+    if (token) {
+      navigate("/");
+    }
+  }, [otpSent, otpVerified, token, currentStep, navigate]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  // Step 1: Send OTP
+  const handleSendOTP = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
+    dispatch(clearError());
+    dispatch(generateOTP(formData.email));
+  };
+
+  // Step 2: Verify OTP
+  const handleVerifyOTP = (e) => {
+    e.preventDefault();
+    dispatch(clearError());
+    if (!formData.otp || formData.otp.length !== 6) return;
+    
+    dispatch(verifyOTP({ 
+      email: formData.email, 
+      otp: formData.otp 
+    }));
+  };
+
+  // Step 3: Final signup (after OTP verified)
+  const handleFinalSignup = (e) => {
+    e.preventDefault();
+    dispatch(clearError());
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
       return;
     }
-    setLoading(true);
-    setTimeout(() => {
-      console.log('Signup successful');
-      setLoading(false);
-    }, 2000);
+
+    dispatch(signup({
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+    }));
   };
 
   return (
@@ -322,14 +118,14 @@ const SignupPage = () => {
           </div>
 
           {error && (
-            <Alert variant="danger" onClose={() => setError('')} dismissible>
+            <Alert variant="danger" onClose={() => dispatch(clearError())} dismissible>
               {error}
             </Alert>
           )}
 
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={currentStep === 1 ? handleSendOTP : currentStep === 2 ? handleVerifyOTP : handleFinalSignup}>
             <div className="form-grid">
-              {/* Step 1: Name and Email */}
+              {/* Step 1: Email */}
               {currentStep === 1 && (
                 <>
                   <div className="form-group-wrapper">
@@ -338,8 +134,9 @@ const SignupPage = () => {
                       <Form.Control
                         type="text"
                         placeholder="John Doe"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        name='name'
+                        value={formData.name}
+                        onChange={handleChange}
                         className="input-field"
                         required
                       />
@@ -352,8 +149,9 @@ const SignupPage = () => {
                       <Form.Control
                         type="email"
                         placeholder="name@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        name='email'
+                        value={formData.email}
+                        onChange={handleChange} 
                         className="input-field"
                         required
                       />
@@ -367,9 +165,9 @@ const SignupPage = () => {
                   >
                     <Button
                       variant="primary"
+                      type="submit"
                       className="w-100 next-button"
-                      onClick={handleSendOtp}
-                      disabled={loading || !name || !email}
+                      disabled={loading || !formData.name || !formData.email}
                     >
                       {loading ? 'Sending...' : (
                         <>
@@ -385,7 +183,7 @@ const SignupPage = () => {
               {currentStep === 2 && (
                 <>
                   <div className="otp-notice">
-                    We've sent a 6-digit code to <strong>{email}</strong>
+                    We've sent a 6-digit code to <strong>{formData.email}</strong>
                   </div>
 
                   <div className="form-group-wrapper">
@@ -394,10 +192,12 @@ const SignupPage = () => {
                       <Form.Control
                         type="text"
                         placeholder="123456"
-                        value={otp}
-                        onChange={(e) => setOtp(e.target.value)}
+                        name='otp'
+                        value={formData.otp}
+                        onChange={handleChange}
                         className="input-field"
                         maxLength="6"
+                        required
                       />
                     </FloatingLabel>
                   </div>
@@ -406,7 +206,8 @@ const SignupPage = () => {
                     <Button
                       variant="link"
                       className="resend-otp"
-                      onClick={handleSendOtp}
+                      onClick={handleSendOTP}
+                      disabled={loading}
                     >
                       Resend OTP
                     </Button>
@@ -417,9 +218,9 @@ const SignupPage = () => {
                     >
                       <Button
                         variant="primary"
+                        type="submit"
                         className="verify-button"
-                        onClick={handleVerifyOtp}
-                        disabled={loading || !otp || otp.length < 6}
+                        disabled={loading || !formData.otp || formData.otp.length < 6}
                       >
                         {loading ? 'Verifying...' : 'Verify'}
                       </Button>
@@ -437,17 +238,13 @@ const SignupPage = () => {
                       <Form.Control
                         type="password"
                         placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        name='password'
+                        value={formData.password}
+                        onChange={handleChange} 
                         className="input-field"
                         required
                       />
                     </FloatingLabel>
-                    <div className="password-hints">
-                      <span className={password.length >= 8 ? 'valid' : ''}>• 8+ characters</span>
-                      <span className={/[A-Z]/.test(password) ? 'valid' : ''}>• Uppercase</span>
-                      <span className={/\d/.test(password) ? 'valid' : ''}>• Number</span>
-                    </div>
                   </div>
 
                   <div className="form-group-wrapper">
@@ -456,8 +253,9 @@ const SignupPage = () => {
                       <Form.Control
                         type="password"
                         placeholder="Confirm Password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        name='confirmPassword'
+                        value={formData.confirmPassword}
+                        onChange={handleChange} 
                         className="input-field"
                         required
                       />
@@ -473,7 +271,7 @@ const SignupPage = () => {
                       variant="primary"
                       type="submit"
                       className="w-100 signup-button"
-                      disabled={loading || !password || password !== confirmPassword}
+                      disabled={loading || !formData.password || formData.password !== formData.confirmPassword}
                     >
                       {loading ? 'Creating Account...' : 'Complete Sign Up'}
                     </Button>

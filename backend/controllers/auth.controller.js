@@ -29,7 +29,7 @@ const generateOTP = async (req, res)=>{
             return res.status(400).json({message: "User already registered", success: false});
         }
         // generate otp
-        const generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+        const generatedOTP = Math.floor(100000 + Math.random() * 9000).toString();
         const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // OTP valid for 10 mins
         // save otp
         optStore[email] = {
@@ -62,7 +62,7 @@ const generateOTP = async (req, res)=>{
 // verify otp and create a new user
 const verifyOTP = async (req, res)=>{
     try {
-        const {name, email, otp, password, role} = req.body;
+        const {email, otp} = req.body;
         const user = await userModel.findOne({email});
         if(user){
             return res.status(400).json({message: "User already registered", success: false});
@@ -75,23 +75,32 @@ const verifyOTP = async (req, res)=>{
         if (optStore[email].expiry < new Date()) {
           return res.status(400).json({ message: "OTP expired", success: false });
         }
-        // delete otp from store
-        delete optStore[email];
-        // hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
-        // create user
-        const newUser = await userModel.create({
-            name,
-            email,
-            password: hashedPassword,
-            role,
-        });
-        res.status(200).json({message: "OTP verified successfully", success: true, user: newUser});
-        const token = generateToken(newUser);
-        res.status(200).json({message: "User created successfully", success: true, token});
+        res.status(200).json({message: "OTP verified successfully", success: true});
     } catch (error) {
         res.status(500).json({message: "Internal server error", success: false, error: error.message});
     }
+}
+const registered = async (req, res) =>{
+  try {
+    const {name, email, password} = req.body;
+    const user = await userModel.findOne({email});
+    if(user){
+      return res.status(400).json({message: "User already registered", success: false});
+    }
+    // hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // create user
+    const newUser = await userModel.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+    // generate token
+    const token = generateToken(newUser);
+    res.status(200).json({message: "User registered successfully", success: true, user: newUser, token});
+  } catch (error) {
+    res.status(400).json({message: "Internal server error", success: false, error: error.message});
+  }
 }
 // login user
 const loginUser = async (req, res) => {
@@ -181,5 +190,6 @@ module.exports = {
   resetPassword,
   getUserById,
   verifyOTP,
-  generateOTP
+  generateOTP,
+  registered
 };
