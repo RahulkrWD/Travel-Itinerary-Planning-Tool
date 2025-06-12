@@ -24,7 +24,6 @@ const LoginPage = () => {
     }
   }, [token, navigate, user]);
   
-
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(clearError());
