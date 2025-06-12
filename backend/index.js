@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors");
 dotenv.config();
  const connectDB = require("./config/mongo.config");
  const authRoutes = require("./routes/auth.route");
@@ -7,7 +8,7 @@ dotenv.config();
 const app = express();
 connectDB();
 app.use(express.json());
-
+app.use(cors());
  app.use("/auth", authRoutes);
 
 app.use((req, res) => {

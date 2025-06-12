@@ -1,0 +1,156 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px);
+  z-index: -1;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.login-card {
+  background: #efeaeae6;
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.login-header h2 {
+  color: #2c3e50;
+  font-weight: 700;
+}
+
+.back-home {
+  display: inline-flex;
+  align-items: center;
+  color: #7f8c8d;
+  text-decoration: none;
+  margin-bottom: 1rem;
+  transition: color 0.3s ease;
+}
+
+.back-home:hover {
+  color: #3498db;
+}
+
+/* Fixed Input Field Styling */
+.form-group-wrapper {
+  position: relative;
+}
+
+.input-field {
+  padding-left: 2.5rem !important;
+  border-radius: 8px !important;
+  border: 1px solid #dfe6e9 !important;
+  transition: all 0.3s ease !important;
+  height: calc(3.5rem + 2px);
+}
+
+.input-field:focus {
+  border-color: #3498db !important;
+  box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25) !important;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7f8c8d;
+  z-index: 4;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus ~ .input-icon {
+  color: #3498db;
+}
+
+/* Floating Label Fix */
+.form-floating>label {
+  left: 2.5rem;
+  transform-origin: 0 0;
+}
+
+.form-floating>.form-control:focus~label,
+.form-floating>.form-control:not(:placeholder-shown)~label,
+.form-floating>.form-select~label {
+  transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+  color: #7f8c8d;
+}
+
+/* Rest of your styles... */
+.forgot-password {
+  color: #7f8c8d;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+  color: #e74c3c;
+}
+
+.login-button {
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.login-button:hover {
+  background: linear-gradient(135deg, #2980b9 0%, #1a252f 100%);
+  transform: translateY(-1px);
+}
+
+.create-account {
+  color: #3498db;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.create-account:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .login-card {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .login-header h2 {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,292 @@
+.signup-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 1rem;
+  }
+  
+  .background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+    z-index: -1;
+  }
+  
+  .signup-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .signup-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 2rem;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  .signup-header {
+    display: grid;
+    gap: 1rem;
+  }
+  
+  .signup-header h2 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin: 0;
+    text-align: center;
+  }
+  
+  .back-home {
+    display: inline-flex;
+    align-items: center;
+    color: #7f8c8d;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    width: fit-content;
+  }
+  
+  .back-home:hover {
+    color: #3498db;
+  }
+  
+  /* Progress Steps */
+  .progress-steps {
+    display: grid;
+    grid-template-columns: auto 1fr auto 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+  
+  .step {
+    display: grid;
+    place-items: center;
+    gap: 0.25rem;
+  }
+  
+  .step-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #dfe6e9;
+    color: #7f8c8d;
+    display: grid;
+    place-items: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  
+  .step-label {
+    font-size: 0.75rem;
+    color: #7f8c8d;
+    text-align: center;
+  }
+  
+  .step-connector {
+    height: 2px;
+    background: #dfe6e9;
+  }
+  
+  .step.active .step-number {
+    background: #3498db;
+    color: white;
+  }
+  
+  .step.active .step-label {
+    color: #2c3e50;
+    font-weight: 500;
+  }
+  
+  .step-connector.active {
+    background: #3498db;
+  }
+  
+  /* Form Grid Layout */
+  .form-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+  
+  .form-group-wrapper {
+    position: relative;
+    display: grid;
+  }
+  
+  .input-field {
+    padding-left: 2.5rem !important;
+    border-radius: 8px !important;
+    border: 1px solid #dfe6e9 !important;
+    transition: all 0.3s ease !important;
+    height: calc(3.5rem + 2px);
+    width: 100%;
+  }
+  
+  .input-field:focus {
+    border-color: #3498db !important;
+    box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25) !important;
+  }
+  
+  .input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7f8c8d;
+    z-index: 4;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .input-field:focus ~ .input-icon {
+    color: #3498db;
+  }
+  
+  /* Floating Label Fix */
+  .form-floating>label {
+    left: 2.5rem;
+    transform-origin: 0 0;
+  }
+  
+  .form-floating>.form-control:focus~label,
+  .form-floating>.form-control:not(:placeholder-shown)~label,
+  .form-floating>.form-select~label {
+    transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+    color: #7f8c8d;
+  }
+  
+  /* OTP Section */
+  .otp-notice {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+  }
+  
+  .otp-actions {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .resend-otp {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0;
+  }
+  
+  .verify-button-wrapper {
+    width: 120px;
+  }
+  
+  .verify-button {
+    width: 100%;
+    border-radius: 8px;
+  }
+  
+  /* Password Hints */
+  .password-hints {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: #7f8c8d;
+  }
+  
+  .password-hints span {
+    display: flex;
+    align-items: center;
+  }
+  
+  .password-hints span.valid {
+    color: #27ae60;
+  }
+  
+  .password-hints span.valid::before {
+    content: '✓';
+    margin-right: 0.25rem;
+  }
+  
+  /* Buttons */
+  .action-button {
+    margin-top: 0.5rem;
+  }
+  
+  .next-button, .signup-button {
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+    border: none;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .next-button:hover, .signup-button:hover {
+    background: linear-gradient(135deg, #2980b9 0%, #1a252f 100%);
+    transform: translateY(-1px);
+  }
+  
+  /* Footer */
+  .signup-footer {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .login-link {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .login-link:hover {
+    color: #2980b9;
+    text-decoration: underline;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 576px) {
+    .signup-card {
+      padding: 1.5rem;
+    }
+  
+    .progress-steps {
+      grid-template-columns: auto 0.5fr auto 0.5fr auto;
+    }
+  
+    .step-label {
+      display: none;
+    }
+  
+    .password-hints {
+      grid-template-columns: 1fr;
+    }
+  
+    .otp-actions {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+  
+    .verify-button-wrapper {
+      width: 100%;
+    }
+  }
