@@ -1,16 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { generateOTP, verifyOTP, signup, resetAuthState, clearError } from "../../redux/AuthSlice";
+import {
+  generateOTP,
+  verifyOTP,
+  signup,
+  resetAuthState,
+  clearError,
+} from "../../redux/AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { FaUser, FaEnvelope, FaLock, FaArrowLeft, FaKey, FaArrowRight } from 'react-icons/fa';
-import { motion } from 'framer-motion';
-import { Container, Form, Button, FloatingLabel, Alert } from 'react-bootstrap';
-import '../../styles/Signup.css';
+import {
+  FaUser,
+  FaEnvelope,
+  FaLock,
+  FaArrowLeft,
+  FaKey,
+  FaArrowRight,
+} from "react-icons/fa";
+import { motion } from "framer-motion";
+import { Container, Form, Button, FloatingLabel, Alert } from "react-bootstrap";
+import "../../styles/Signup.css";
 
 const SignupPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, otpSent, otpVerified, token } = useSelector((state) => state.auth);
+  const { loading, error, otpSent, otpVerified, token } = useSelector(
+    (state) => state.auth
+  );
 
   const [formData, setFormData] = useState({
     name: "",
@@ -24,7 +39,7 @@ const SignupPage = () => {
   useEffect(() => {
     dispatch(resetAuthState());
   }, [dispatch]);
-  
+
   // Step transition logic
   useEffect(() => {
     if (otpSent && currentStep === 1) {
@@ -57,11 +72,13 @@ const SignupPage = () => {
     e.preventDefault();
     dispatch(clearError());
     if (!formData.otp || formData.otp.length !== 6) return;
-    
-    dispatch(verifyOTP({ 
-      email: formData.email, 
-      otp: formData.otp 
-    }));
+
+    dispatch(
+      verifyOTP({
+        email: formData.email,
+        otp: formData.otp,
+      })
+    );
   };
 
   // Step 3: Final signup (after OTP verified)
@@ -74,17 +91,19 @@ const SignupPage = () => {
       return;
     }
 
-    dispatch(signup({
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-    }));
+    dispatch(
+      signup({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      })
+    );
   };
 
   return (
     <div className="signup-page">
       <div className="background-image"></div>
-      
+
       <Container className="signup-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -98,20 +117,24 @@ const SignupPage = () => {
               Back to Home
             </Link>
             <h2 className="text-center mb-4">Create Your Account</h2>
-            
+
             {/* Progress Steps */}
             <div className="progress-steps">
-              <div className={`step ${currentStep >= 1 ? 'active' : ''}`}>
+              <div className={`step ${currentStep >= 1 ? "active" : ""}`}>
                 <div className="step-number">1</div>
                 <div className="step-label">Basic Info</div>
               </div>
-              <div className={`step-connector ${currentStep >= 2 ? 'active' : ''}`}></div>
-              <div className={`step ${currentStep >= 2 ? 'active' : ''}`}>
+              <div
+                className={`step-connector ${currentStep >= 2 ? "active" : ""}`}
+              ></div>
+              <div className={`step ${currentStep >= 2 ? "active" : ""}`}>
                 <div className="step-number">2</div>
                 <div className="step-label">Verify Email</div>
               </div>
-              <div className={`step-connector ${currentStep >= 3 ? 'active' : ''}`}></div>
-              <div className={`step ${currentStep >= 3 ? 'active' : ''}`}>
+              <div
+                className={`step-connector ${currentStep >= 3 ? "active" : ""}`}
+              ></div>
+              <div className={`step ${currentStep >= 3 ? "active" : ""}`}>
                 <div className="step-number">3</div>
                 <div className="step-label">Set Password</div>
               </div>
@@ -119,12 +142,24 @@ const SignupPage = () => {
           </div>
 
           {error && (
-            <Alert variant="danger" onClose={() => dispatch(clearError())} dismissible>
+            <Alert
+              variant="danger"
+              onClose={() => dispatch(clearError())}
+              dismissible
+            >
               {error}
             </Alert>
           )}
 
-          <Form onSubmit={currentStep === 1 ? handleSendOTP : currentStep === 2 ? handleVerifyOTP : handleFinalSignup}>
+          <Form
+            onSubmit={
+              currentStep === 1
+                ? handleSendOTP
+                : currentStep === 2
+                ? handleVerifyOTP
+                : handleFinalSignup
+            }
+          >
             <div className="form-grid">
               {/* Step 1: Email */}
               {currentStep === 1 && (
@@ -135,7 +170,7 @@ const SignupPage = () => {
                       <Form.Control
                         type="text"
                         placeholder="John Doe"
-                        name='name'
+                        name="name"
                         value={formData.name}
                         onChange={handleChange}
                         className="input-field"
@@ -150,9 +185,9 @@ const SignupPage = () => {
                       <Form.Control
                         type="email"
                         placeholder="name@example.com"
-                        name='email'
+                        name="email"
                         value={formData.email}
-                        onChange={handleChange} 
+                        onChange={handleChange}
                         className="input-field"
                         required
                       />
@@ -170,7 +205,9 @@ const SignupPage = () => {
                       className="w-100 next-button"
                       disabled={loading || !formData.name || !formData.email}
                     >
-                      {loading ? 'Sending...' : (
+                      {loading ? (
+                        "Sending..."
+                      ) : (
                         <>
                           Continue <FaArrowRight className="ms-2" />
                         </>
@@ -184,7 +221,8 @@ const SignupPage = () => {
               {currentStep === 2 && (
                 <>
                   <div className="otp-notice">
-                    We've sent a 6-digit code to <strong>{formData.email}</strong>
+                    We've sent a 6-digit code to{" "}
+                    <strong>{formData.email}</strong>
                   </div>
 
                   <div className="form-group-wrapper">
@@ -193,7 +231,7 @@ const SignupPage = () => {
                       <Form.Control
                         type="text"
                         placeholder="123456"
-                        name='otp'
+                        name="otp"
                         value={formData.otp}
                         onChange={handleChange}
                         className="input-field"
@@ -221,9 +259,11 @@ const SignupPage = () => {
                         variant="primary"
                         type="submit"
                         className="verify-button"
-                        disabled={loading || !formData.otp || formData.otp.length < 6}
+                        disabled={
+                          loading || !formData.otp || formData.otp.length < 6
+                        }
                       >
-                        {loading ? 'Verifying...' : 'Verify'}
+                        {loading ? "Verifying..." : "Verify"}
                       </Button>
                     </motion.div>
                   </div>
@@ -239,9 +279,9 @@ const SignupPage = () => {
                       <Form.Control
                         type="password"
                         placeholder="Password"
-                        name='password'
+                        name="password"
                         value={formData.password}
-                        onChange={handleChange} 
+                        onChange={handleChange}
                         className="input-field"
                         required
                       />
@@ -250,13 +290,16 @@ const SignupPage = () => {
 
                   <div className="form-group-wrapper">
                     <FaLock className="input-icon" />
-                    <FloatingLabel controlId="confirmPassword" label="Confirm Password">
+                    <FloatingLabel
+                      controlId="confirmPassword"
+                      label="Confirm Password"
+                    >
                       <Form.Control
                         type="password"
                         placeholder="Confirm Password"
-                        name='confirmPassword'
+                        name="confirmPassword"
                         value={formData.confirmPassword}
-                        onChange={handleChange} 
+                        onChange={handleChange}
                         className="input-field"
                         required
                       />
@@ -272,9 +315,13 @@ const SignupPage = () => {
                       variant="primary"
                       type="submit"
                       className="w-100 signup-button"
-                      disabled={loading || !formData.password || formData.password !== formData.confirmPassword}
+                      disabled={
+                        loading ||
+                        !formData.password ||
+                        formData.password !== formData.confirmPassword
+                      }
                     >
-                      {loading ? 'Creating Account...' : 'Complete Sign Up'}
+                      {loading ? "Creating Account..." : "Complete Sign Up"}
                     </Button>
                   </motion.div>
                 </>
@@ -284,7 +331,7 @@ const SignupPage = () => {
 
           <div className="signup-footer">
             <p className="text-center">
-              Already have an account?{' '}
+              Already have an account?{" "}
               <Link to="/Sign-In" className="login-link">
                 Log in
               </Link>

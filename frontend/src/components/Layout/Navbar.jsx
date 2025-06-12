@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react';
-import { 
-  FaConciergeBell, 
-  FaDollarSign, 
-  FaSignInAlt, 
-  FaUserPlus, 
+import { useState, useEffect } from "react";
+import {
+  FaConciergeBell,
+  FaDollarSign,
+  FaSignInAlt,
+  FaUserPlus,
   FaUserCircle,
   FaMapMarkedAlt,
   FaSuitcase,
   FaSignOutAlt,
-} from 'react-icons/fa';
-import { BiTrip } from 'react-icons/bi';
-import { useSelector, useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { logout } from '../../redux/AuthSlice';
-import styles from './styles/Navbar.module.css';
+} from "react-icons/fa";
+import { BiTrip } from "react-icons/bi";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../../redux/AuthSlice";
+import styles from "./styles/Navbar.module.css";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -26,8 +26,8 @@ const Navbar = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toggleMobileMenu = () => {
@@ -36,11 +36,13 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/');
+    navigate("/");
   };
 
   return (
-    <nav className={`${styles.navbar} ${scrolled ? styles.navbarScrolled : ''}`}>
+    <nav
+      className={`${styles.navbar} ${scrolled ? styles.navbarScrolled : ""}`}
+    >
       <div className={styles.container}>
         <Link to="/" className={`${styles.navbarBrand}`}>
           <BiTrip className={styles.brandIcon} />
@@ -48,8 +50,10 @@ const Navbar = () => {
         </Link>
 
         {/* Mobile menu toggle */}
-        <button 
-          className={`${styles.navbarToggler} ${mobileMenuOpen ? styles.navbarTogglerActive : ''}`}
+        <button
+          className={`${styles.navbarToggler} ${
+            mobileMenuOpen ? styles.navbarTogglerActive : ""
+          }`}
           onClick={toggleMobileMenu}
           aria-label="Toggle navigation"
         >
@@ -57,7 +61,11 @@ const Navbar = () => {
         </button>
 
         {/* Main navigation */}
-        <div className={`${styles.navbarCollapse} ${mobileMenuOpen ? styles.navbarCollapseActive : ''}`}>
+        <div
+          className={`${styles.navbarCollapse} ${
+            mobileMenuOpen ? styles.navbarCollapseActive : ""
+          }`}
+        >
           <ul className={styles.navbarNav}>
             {/* Left-aligned navigation items */}
             <div className={styles.navLeft}>
@@ -102,7 +110,10 @@ const Navbar = () => {
                     </Link>
                   </li>
                   <li className={styles.navItem}>
-                    <Link className={`${styles.signUpButton} text-decoration-none`} to="/Sign-Up">
+                    <Link
+                      className={`${styles.signUpButton} text-decoration-none`}
+                      to="/Sign-Up"
+                    >
                       <FaUserPlus className={styles.navIcon} />
                       Sign Up - It's Free!
                     </Link>
@@ -110,20 +121,16 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
-                   <li className={styles.navItem}>
+                  <li className={styles.navItem}>
                     <Link className={styles.navLink} to="/profile">
                       <FaUserCircle className={styles.navIcon} />
                       Profile
                     </Link>
                   </li>
-                  <button 
-                          className={styles.logoutBtn} 
-                          onClick={handleLogout}
-                        >
-                          <FaSignOutAlt className={styles.dropdownIcon} />
-                          Logout
+                  <button className={styles.logoutBtn} onClick={handleLogout}>
+                    <FaSignOutAlt className={styles.dropdownIcon} />
+                    Logout
                   </button>
-
                 </>
               )}
             </div>

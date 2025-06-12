@@ -1,20 +1,20 @@
-import React from 'react';
-import styles from './styles/Footer.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
+import React from "react";
+import styles from "./styles/Footer.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
   faMapMarkerAlt,
   faCalendarAlt,
   faUsers,
   faQuestionCircle,
   faEnvelope,
   faMobileAlt,
-} from '@fortawesome/free-solid-svg-icons';
-import { 
-  faTwitter, 
-  faFacebook, 
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faTwitter,
+  faFacebook,
   faInstagram,
-  faLinkedin
-} from '@fortawesome/free-brands-svg-icons';
+  faLinkedin,
+} from "@fortawesome/free-brands-svg-icons";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -30,13 +30,19 @@ const Footer = () => {
             <ul className={styles.footerLinks}>
               <li>
                 <a href="#" className={styles.footerLink}>
-                  <FontAwesomeIcon icon={faMapMarkerAlt} className={styles.linkIcon} />
+                  <FontAwesomeIcon
+                    icon={faMapMarkerAlt}
+                    className={styles.linkIcon}
+                  />
                   My Itineraries
                 </a>
               </li>
               <li>
                 <a href="#" className={styles.footerLink}>
-                  <FontAwesomeIcon icon={faCalendarAlt} className={styles.linkIcon} />
+                  <FontAwesomeIcon
+                    icon={faCalendarAlt}
+                    className={styles.linkIcon}
+                  />
                   Trip Planner
                 </a>
               </li>
@@ -48,7 +54,10 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#" className={styles.footerLink}>
-                  <FontAwesomeIcon icon={faQuestionCircle} className={styles.linkIcon} />
+                  <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    className={styles.linkIcon}
+                  />
                   Help Center
                 </a>
               </li>
@@ -59,10 +68,26 @@ const Footer = () => {
           <div className={styles.footerSection}>
             <h5 className={styles.sectionTitle}>Company</h5>
             <ul className={styles.footerLinks}>
-              <li><a href="#" className={styles.footerLink}>About Us</a></li>
-              <li><a href="#" className={styles.footerLink}>Careers</a></li>
-              <li><a href="#" className={styles.footerLink}>Travel Blog</a></li>
-              <li><a href="#" className={styles.footerLink}>Press</a></li>
+              <li>
+                <a href="#" className={styles.footerLink}>
+                  About Us
+                </a>
+              </li>
+              <li>
+                <a href="#" className={styles.footerLink}>
+                  Careers
+                </a>
+              </li>
+              <li>
+                <a href="#" className={styles.footerLink}>
+                  Travel Blog
+                </a>
+              </li>
+              <li>
+                <a href="#" className={styles.footerLink}>
+                  Press
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -80,8 +105,16 @@ const Footer = () => {
                   Terms of Service
                 </a>
               </li>
-              <li><a href="#" className={styles.footerLink}>Cookie Policy</a></li>
-              <li><a href="#" className={styles.footerLink}>GDPR Compliance</a></li>
+              <li>
+                <a href="#" className={styles.footerLink}>
+                  Cookie Policy
+                </a>
+              </li>
+              <li>
+                <a href="#" className={styles.footerLink}>
+                  GDPR Compliance
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -89,12 +122,21 @@ const Footer = () => {
           <div className={styles.footerSection}>
             <h5 className={styles.sectionTitle}>Contact Us</h5>
             <div className={styles.contactInfo}>
-              <a href="mailto:support@travelapp.com" className={styles.contactLink}>
-                <FontAwesomeIcon icon={faEnvelope} className={styles.contactIcon} />
+              <a
+                href="mailto:support@travelapp.com"
+                className={styles.contactLink}
+              >
+                <FontAwesomeIcon
+                  icon={faEnvelope}
+                  className={styles.contactIcon}
+                />
                 support@travelapp.com
               </a>
               <a href="tel:+18005551234" className={styles.contactLink}>
-                <FontAwesomeIcon icon={faMobileAlt} className={styles.contactIcon} />
+                <FontAwesomeIcon
+                  icon={faMobileAlt}
+                  className={styles.contactIcon}
+                />
                 +1 (800) 555-1234
               </a>
             </div>
@@ -120,7 +162,6 @@ const Footer = () => {
           <p className={styles.copyright}>
             © {currentYear} TravelEase. All rights reserved.
           </p>
-         
         </div>
       </div>
     </footer>

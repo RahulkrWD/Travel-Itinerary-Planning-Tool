@@ -7,16 +7,19 @@ const Layout = ({ children }) => {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Navbar />
-      <main className="flex-grow-1" style={{
-        paddingTop: '100px',
-        paddingBottom: '2rem'
-      }}>
+      <main
+        className="flex-grow-1"
+        style={{
+          paddingTop: "100px",
+          paddingBottom: "2rem",
+        }}
+      >
         <div className="container">
           <Outlet />
           {children}
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
