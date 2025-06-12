@@ -4,7 +4,7 @@ const roleMiddleware = (roles) => {
       if (roles.includes(userRole)) {
         next();
       } else {
-        res.status(403).json({ message: "Access denied" });
+        res.status(403).json({ message: "Access denied" , error: error.message, success: false });
       }
     };
   };
