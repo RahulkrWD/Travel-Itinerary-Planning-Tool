@@ -98,6 +98,8 @@ const registered = async (req, res) =>{
     // generate token
     const token = generateToken(newUser);
     res.status(200).json({message: "User registered successfully", success: true, user: newUser, token});
+    // delete otp from store
+    delete optStore[email];
   } catch (error) {
     res.status(400).json({message: "Internal server error", success: false, error: error.message});
   }
