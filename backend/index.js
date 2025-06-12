@@ -13,6 +13,9 @@ app.use(cors());
 app.use("/auth", authRoutes);
 
 
+app.get("/", (req, res)=>{
+  res.status(200).json({message: "Test Router", success: true})
+})
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found", error: error.message, success: false });
 });
