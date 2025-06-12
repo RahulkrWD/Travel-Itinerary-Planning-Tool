@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { generateOTP, verifyOTP, signup, resetAuthState, clearError } from "../redux/AuthSlice";
+import { generateOTP, verifyOTP, signup, resetAuthState, clearError } from "../../redux/AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUser, FaEnvelope, FaLock, FaArrowLeft, FaKey, FaArrowRight } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { Container, Form, Button, FloatingLabel, Alert } from 'react-bootstrap';
-import '../styles/Signup.css';
+import '../../styles/Signup.css';
 
 const SignupPage = () => {
   const dispatch = useDispatch();
@@ -37,6 +37,7 @@ const SignupPage = () => {
 
     if (token) {
       navigate("/");
+      localStorage.setItem("authToken", JSON.stringify(token));
     }
   }, [otpSent, otpVerified, token, currentStep, navigate]);
 

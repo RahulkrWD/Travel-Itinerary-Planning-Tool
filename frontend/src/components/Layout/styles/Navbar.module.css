@@ -40,14 +40,6 @@
     animation: pulse 2s infinite;
   }
   
-  .brandPro {
-    font-size: 0.9rem;
-    margin-left: 0.3rem;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-  }
-  
   .navbarToggler {
     background: none;
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -136,7 +128,7 @@
     text-decoration: none;
     display: flex;
     align-items: center;
-    padding: 0.5rem 0;
+    padding: 0.8rem;
     position: relative;
     transition: all 0.3s ease;
     font-weight: 500;
@@ -171,7 +163,7 @@
     width: 100%;
   }
   
-  .signUpButton {
+  .signUpButton, .logoutBtn {
     background-color: #e74c3c;
     color: white;
     border: none;
@@ -184,30 +176,10 @@
     transition: all 0.3s ease;
   }
   
-  .signUpButton:hover {
+  .signUpButton:hover, .logoutBtn:hover {
     background-color: #c0392b;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* .themeToggle {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.3rem;
-    cursor: pointer;
-    margin-left: 1rem;
-    transition: all 0.3s ease;
-  } */
-  
-  /* .themeToggle:hover {
-    color: #f1c40f;
-    transform: rotate(30deg);
-  }
-   */
-  .concurLogo {
-    height: 20px;
-    margin-right: 0.5rem;
   }
   
   /* Mobile Styles */
