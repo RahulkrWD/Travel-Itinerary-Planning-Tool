@@ -54,6 +54,7 @@ export const login  = createAsyncThunk(
     }
   }
 )
+
 const initialState = {
   loading: false,
   error: null,
@@ -147,8 +148,9 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = action.payload?.message || "Failed to login user";
     })
+
   },
 });
 
-export const { resetAuthState, clearError, setUser, logout  } = authSlice.actions;
+export const { resetAuthState, clearError, setUser, logout } = authSlice.actions;
 export default authSlice.reducer;

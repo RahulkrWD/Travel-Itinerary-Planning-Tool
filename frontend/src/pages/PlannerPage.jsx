@@ -3,7 +3,7 @@ import Layout from "../components/Layout/Layout";
 const PlannerPage = () => {
   return (
     <Layout>
-      <h1>How It Works</h1>
+      <h1>PlannerPage</h1>
     </Layout>
   );
 };

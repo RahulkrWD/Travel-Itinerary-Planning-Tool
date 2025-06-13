@@ -164,6 +164,12 @@ const forgotPassword = async (req, res) => {
   try {
     // check user exists or not
     const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ 
+        success: false,
+        message: "Email is required" 
+      });
+    }
     const user = await userModel.findOne({ email });
     if (!user)
       return res
