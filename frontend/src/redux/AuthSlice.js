@@ -60,7 +60,7 @@ const initialState = {
   error: null,
   otpSent: false,
   otpVerified: false,
-  token: JSON.parse(localStorage.getItem("authToken"))|| null,
+  token: JSON.parse(sessionStorage.getItem("authToken"))|| null,
 };
 
 
@@ -83,7 +83,7 @@ const authSlice = createSlice({
       state.token = action.payload.token;
     },
     logout: (state) => {
-      localStorage.removeItem('authToken');
+      sessionStorage.removeItem('authToken');
       state.token = null;
       state.loading = false;
       state.error = null;

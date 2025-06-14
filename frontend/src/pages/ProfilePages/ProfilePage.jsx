@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import Layout from "../components/Layout/Layout";
+import React, { useEffect, useState } from "react";
+import Layout from "../../components/Layout/Layout";
 import {
-  FaUser,
   FaEdit,
   FaMapMarkerAlt,
   FaPlus,
@@ -10,7 +9,6 @@ import {
   FaEnvelope,
   FaHome,
   FaBriefcase,
-  FaStar,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import {
@@ -24,119 +22,196 @@ import {
   Badge,
   Tab,
   Tabs,
+  Alert,
+  Spinner,
 } from "react-bootstrap";
-import "../styles/ProfilePage.css";
+import "../../styles/ProfilePage.css";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  userProfile,
+  getAddress,
+  updateProfile,
+  deleteAddress,
+  addAddress,
+  updateAddress,
+} from "../../redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
-  // User data state
-  const [user, setUser] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+1 (555) 123-4567",
-    bio: "Travel enthusiast and adventure seeker. Love exploring new places and cultures.",
-    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-  });
+  const token = useSelector((state) => state.auth.token);
+  const { profile, addresses, loading, error } = useSelector(
+    (state) => state.user
+  );
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
 
-  // Addresses state
-  const [addresses, setAddresses] = useState([
-    {
-      id: 1,
-      type: "home",
-      street: "123 Main St",
-      city: "New York",
-      state: "NY",
-      zip: "10001",
-      country: "USA",
-      isDefault: true,
-    },
-    {
-      id: 2,
-      type: "work",
-      street: "456 Business Ave",
-      city: "New York",
-      state: "NY",
-      zip: "10002",
-      country: "USA",
-      isDefault: false,
-    },
-  ]);
+  useEffect(()=>{
+    if(!token) {
+      return navigate("/login")
+    }
+  })
 
   // Modal states
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
+  const [successMessage, setSuccessMessage] = useState("");
 
   // Form states
-  const [profileForm, setProfileForm] = useState({ ...user });
+  const [profileForm, setProfileForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    bio: "",
+  });
   const [addressForm, setAddressForm] = useState({
-    type: "home",
-    street: "",
+    type: "Home",
+    address: "",
     city: "",
     state: "",
-    zip: "",
+    pinCode: "",
     country: "",
-    isDefault: false,
   });
 
+  // Load data on component mount
+  useEffect(() => {
+    if (token) {
+      dispatch(userProfile(token));
+      dispatch(getAddress(token));
+    }
+  }, [dispatch, token]);
+
+  // Update form when profile data loads
+  useEffect(() => {
+    if (profile?.data) {
+      setProfileForm({
+        name: profile.data.name || "",
+        email: profile.data.email || "",
+        phone: profile.data.phone || "",
+        bio: profile.data.bio || "",
+      });
+    }
+  }, [profile]);
+
   // Handle profile update
-  const handleProfileUpdate = (e) => {
+  const handleProfileUpdate = async (e) => {
     e.preventDefault();
-    setUser(profileForm);
-    setShowProfileModal(false);
+    try {
+      const result = await dispatch(updateProfile({ token, userData: profileForm }));
+      if (result.payload?.success) {
+        setSuccessMessage("Profile updated successfully!");
+        setShowProfileModal(false);
+        dispatch(userProfile(token)); // Refresh profile data
+      }
+    } catch (err) {
+      console.error("Failed to update profile:", err);
+    }
   };
 
   // Handle address add/update
-  const handleAddressSubmit = (e) => {
+  const handleAddressSubmit = async (e) => {
     e.preventDefault();
-    if (addressForm.id) {
-      // Update existing address
-      setAddresses(
-        addresses.map((addr) =>
-          addr.id === addressForm.id ? addressForm : addr
-        )
-      );
-    } else {
-      // Add new address
-      setAddresses([
-        ...addresses,
-        {
-          ...addressForm,
-          id: Date.now(),
-        },
-      ]);
+    try {
+      let result;
+      if (addressForm._id) {
+        // Update existing address
+        result = await dispatch(
+          updateAddress({
+            token,
+            addressId: addressForm._id,
+            address: addressForm,
+          })
+        );
+      } else {
+        // Add new address
+        result = await dispatch(addAddress({ token, address: addressForm }));
+      }
+      
+      if (result.payload?.success) {
+        setSuccessMessage(
+          addressForm._id 
+            ? "Address updated successfully!" 
+            : "Address added successfully!"
+        );
+        setShowAddressModal(false);
+        resetAddressForm();
+        dispatch(getAddress(token)); // Refresh addresses
+      }
+    } catch (err) {
+      console.error("Failed to save address:", err);
     }
-    setShowAddressModal(false);
-    setAddressForm({
-      type: "home",
-      street: "",
-      city: "",
-      state: "",
-      zip: "",
-      country: "",
-      isDefault: false,
-    });
   };
 
   // Handle address delete
-  const handleDeleteAddress = (id) => {
-    setAddresses(addresses.filter((addr) => addr.id !== id));
-  };
-
-  // Handle set default address
-  const handleSetDefault = (id) => {
-    setAddresses(
-      addresses.map((addr) => ({
-        ...addr,
-        isDefault: addr.id === id,
-      }))
-    );
+  const handleDeleteAddress = async (id) => {
+    try {
+      const result = await dispatch(deleteAddress({ token, addressId: id }));
+      if (result.payload?.success) {
+        setSuccessMessage("Address deleted successfully!");
+        dispatch(getAddress(token)); // Refresh addresses
+      }
+    } catch (err) {
+      console.error("Failed to delete address:", err);
+    }
   };
 
   // Handle edit address
   const handleEditAddress = (address) => {
-    setAddressForm(address);
+    setAddressForm({
+      _id: address._id,
+      type: address.type,
+      address: address.address,
+      city: address.city,
+      state: address.state,
+      pinCode: address.pinCode,
+      country: address.country,
+    });
     setShowAddressModal(true);
   };
+
+  // Reset address form
+  const resetAddressForm = () => {
+    setAddressForm({
+      type: "Home",
+      address: "",
+      city: "",
+      state: "",
+      pinCode: "",
+      country: "",
+    });
+  };
+
+  // Clear success message after 3 seconds
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <Container className="profile-container py-5 text-center">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </Container>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <Container className="profile-container py-5">
+          <Alert variant="danger">{error}</Alert>
+        </Container>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -146,6 +221,12 @@ const ProfilePage = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
+          {successMessage && (
+            <Alert variant="success" onClose={() => setSuccessMessage("")} dismissible>
+              {successMessage}
+            </Alert>
+          )}
+
           <Tabs
             activeKey={activeTab}
             onSelect={(k) => setActiveTab(k)}
@@ -162,7 +243,7 @@ const ProfilePage = () => {
                         className="avatar-container mb-3"
                       >
                         <img
-                          src={user.avatar}
+                          src="https://randomuser.me/api/portraits/men/1.jpg"
                           alt="Profile"
                           className="profile-avatar"
                         />
@@ -170,27 +251,26 @@ const ProfilePage = () => {
                           <FaEdit />
                         </div>
                       </motion.div>
-                      <h3>{user.name}</h3>
-                      <p className="text-muted">{user.bio}</p>
+                      <h3>{profile?.data?.name}</h3>
+                      {profile?.data?.bio && <p className="text-muted">{profile.data.bio}</p>}
 
                       <div className="profile-info mt-4">
                         <p>
                           <FaEnvelope className="me-2" />
-                          {user.email}
+                          {profile?.data?.email}
                         </p>
-                        <p>
-                          <FaPhone className="me-2" />
-                          {user.phone}
-                        </p>
+                        {profile?.data?.phone && (
+                          <p>
+                            <FaPhone className="me-2" />
+                            {profile.data.phone}
+                          </p>
+                        )}
                       </div>
 
                       <Button
                         variant="outline-primary"
                         className="mt-3"
-                        onClick={() => {
-                          setProfileForm({ ...user });
-                          setShowProfileModal(true);
-                        }}
+                        onClick={() => setShowProfileModal(true)}
                       >
                         <FaEdit className="me-2" />
                         Edit Profile
@@ -209,15 +289,7 @@ const ProfilePage = () => {
                           variant="primary"
                           size="sm"
                           onClick={() => {
-                            setAddressForm({
-                              type: "home",
-                              street: "",
-                              city: "",
-                              state: "",
-                              zip: "",
-                              country: "",
-                              isDefault: false,
-                            });
+                            resetAddressForm();
                             setShowAddressModal(true);
                           }}
                         >
@@ -227,77 +299,66 @@ const ProfilePage = () => {
                       </div>
 
                       <Row className="g-4">
-                        {addresses.map((address) => (
-                          <Col md={6} key={address.id}>
-                            <motion.div
-                              whileHover={{ y: -5 }}
-                              className="address-card"
-                            >
-                              <Card>
-                                <Card.Body>
-                                  <div className="d-flex justify-content-between">
-                                    <div>
-                                      <h5>
-                                        {address.type === "home" ? (
-                                          <FaHome className="me-2" />
-                                        ) : (
-                                          <FaBriefcase className="me-2" />
-                                        )}
-                                        {address.type.charAt(0).toUpperCase() +
-                                          address.type.slice(1)}
-                                      </h5>
-                                      {address.isDefault && (
-                                        <Badge bg="success" className="mb-2">
-                                          Default
-                                        </Badge>
-                                      )}
+                        {addresses?.data?.length > 0 ? (
+                          
+                          addresses.data.map((address) => (
+                            <Col md={6} key={address._id}>
+                              
+                              <motion.div
+                                whileHover={{ y: -5 }}
+                                className="address-card"
+                              >
+                                <Card>
+                                  <Card.Body>
+                                    <div className="d-flex justify-content-between">
+                                      <div>
+                                        <h5>
+                                          {address.type === "Home" ? (
+                                            <FaHome className="me-2" />
+                                          ) : address.type === "Work" ? (
+                                            <FaBriefcase className="me-2" />
+                                          ) : (
+                                            <FaMapMarkerAlt className="me-2" />
+                                          )}
+                                          {address.type}
+                                        </h5>
+                                      </div>
+                                      <div>
+                                        <Button
+                                          variant="link"
+                                          size="sm"
+                                          onClick={() =>
+                                            handleEditAddress(address)
+                                          }
+                                        >
+                                          <FaEdit />
+                                        </Button>
+                                        <Button
+                                          variant="link"
+                                          size="sm"
+                                          className="text-danger"
+                                          onClick={() =>
+                                            handleDeleteAddress(address._id)
+                                            
+                                          }
+                                          
+                                        >
+                                          <FaTrash />
+                                        </Button>
+                                      </div>
                                     </div>
-                                    <div>
-                                      <Button
-                                        variant="link"
-                                        size="sm"
-                                        onClick={() =>
-                                          handleEditAddress(address)
-                                        }
-                                      >
-                                        <FaEdit />
-                                      </Button>
-                                      <Button
-                                        variant="link"
-                                        size="sm"
-                                        className="text-danger"
-                                        onClick={() =>
-                                          handleDeleteAddress(address.id)
-                                        }
-                                      >
-                                        <FaTrash />
-                                      </Button>
-                                    </div>
-                                  </div>
-                                  <p className="mb-1">{address.street}</p>
-                                  <p className="mb-1">
-                                    {address.city}, {address.state}{" "}
-                                    {address.zip}
-                                  </p>
-                                  <p className="mb-3">{address.country}</p>
-                                  {!address.isDefault && (
-                                    <Button
-                                      variant="outline-secondary"
-                                      size="sm"
-                                      onClick={() =>
-                                        handleSetDefault(address.id)
-                                      }
-                                    >
-                                      Set as Default
-                                    </Button>
-                                  )}
-                                </Card.Body>
-                              </Card>
-                            </motion.div>
-                          </Col>
-                        ))}
-
-                        {addresses.length === 0 && (
+                                    <p className="mb-1">{address.address}</p>
+                                    <p className="mb-1">
+                                      {address.city}, {address.state}{" "}
+                                      {address.pinCode}
+                                    </p>
+                                    <p className="mb-3">{address.country}</p>
+                                  </Card.Body>
+                                </Card>
+                              </motion.div>
+                            </Col>
+                          ))
+                        ) : (
                           <Col className="text-center py-5">
                             <FaMapMarkerAlt
                               size={48}
@@ -355,6 +416,8 @@ const ProfilePage = () => {
                 onChange={(e) =>
                   setProfileForm({ ...profileForm, email: e.target.value })
                 }
+                readOnly
+                disabled
                 required
               />
             </Form.Group>
@@ -400,7 +463,7 @@ const ProfilePage = () => {
       <Modal show={showAddressModal} onHide={() => setShowAddressModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {addressForm.id ? "Edit Address" : "Add New Address"}
+            {addressForm._id ? "Edit Address" : "Add New Address"}
           </Modal.Title>
         </Modal.Header>
         <Form onSubmit={handleAddressSubmit}>
@@ -412,10 +475,11 @@ const ProfilePage = () => {
                 onChange={(e) =>
                   setAddressForm({ ...addressForm, type: e.target.value })
                 }
+                required
               >
-                <option value="home">Home</option>
-                <option value="work">Work</option>
-                <option value="other">Other</option>
+                <option value="Home">Home</option>
+                <option value="Work">Work</option>
+                <option value="Other">Other</option>
               </Form.Select>
             </Form.Group>
 
@@ -423,9 +487,9 @@ const ProfilePage = () => {
               <Form.Label>Street Address</Form.Label>
               <Form.Control
                 type="text"
-                value={addressForm.street}
+                value={addressForm.address}
                 onChange={(e) =>
-                  setAddressForm({ ...addressForm, street: e.target.value })
+                  setAddressForm({ ...addressForm, address: e.target.value })
                 }
                 required
               />
@@ -465,10 +529,10 @@ const ProfilePage = () => {
                 <Form.Group>
                   <Form.Label>ZIP/Postal Code</Form.Label>
                   <Form.Control
-                    type="text"
-                    value={addressForm.zip}
+                    type="number"
+                    value={addressForm.pinCode}
                     onChange={(e) =>
-                      setAddressForm({ ...addressForm, zip: e.target.value })
+                      setAddressForm({ ...addressForm, pinCode: e.target.value })
                     }
                     required
                   />
@@ -491,15 +555,6 @@ const ProfilePage = () => {
                 </Form.Group>
               </Col>
             </Row>
-
-            <Form.Check
-              type="checkbox"
-              label="Set as default address"
-              checked={addressForm.isDefault}
-              onChange={(e) =>
-                setAddressForm({ ...addressForm, isDefault: e.target.checked })
-              }
-            />
           </Modal.Body>
           <Modal.Footer>
             <Button
@@ -509,7 +564,7 @@ const ProfilePage = () => {
               Cancel
             </Button>
             <Button variant="primary" type="submit">
-              {addressForm.id ? "Update Address" : "Add Address"}
+              {addressForm._id ? "Update Address" : "Add Address"}
             </Button>
           </Modal.Footer>
         </Form>

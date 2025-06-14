@@ -52,7 +52,7 @@ const SignupPage = () => {
 
     if (token) {
       navigate("/");
-      localStorage.setItem("authToken", JSON.stringify(token));
+      sessionStorage.setItem("authToken", JSON.stringify(token));
     }
   }, [otpSent, otpVerified, token, currentStep, navigate]);
 

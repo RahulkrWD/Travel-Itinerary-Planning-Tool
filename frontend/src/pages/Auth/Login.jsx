@@ -26,7 +26,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (token) {
       navigate("/");
-      localStorage.setItem("authToken", JSON.stringify(token));
+      sessionStorage.setItem("authToken", JSON.stringify(token));
     }
   }, [token, navigate, user]);
 

@@ -9,7 +9,7 @@ import HowItWorks from "./pages/HowItWorks";
 import Pricing from "./pages/Pricing";
 import MyTrips from "./pages/MyTrips";
 import PlannerPage from "./pages/PlannerPage";
-import ProfilePage from "./pages/ProfilePage";
+import ProfilePage from "./pages/ProfilePages/ProfilePage";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 function App() {
   return (

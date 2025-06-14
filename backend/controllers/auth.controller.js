@@ -230,28 +230,10 @@ const resetPassword = async (req, res) => {
   }
 };
 
-// get user by id only admin
-const getUserById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = await userModel.findById(id);
-    res
-      .status(200)
-      .json({ message: "User fetched successfully", user, success: true });
-  } catch (error) {
-    res.status(500).json({
-      message: "Internal server error",
-      error: error.message,
-      success: false,
-    });
-  }
-};
-
 module.exports = {
   loginUser,
   forgotPassword,
   resetPassword,
-  getUserById,
   verifyOTP,
   generateOTP,
   registered,

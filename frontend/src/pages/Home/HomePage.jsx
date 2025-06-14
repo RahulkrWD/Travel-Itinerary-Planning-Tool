@@ -191,14 +191,16 @@ const HomePage = () => {
             Ready for Your Next Adventure?
           </Typography>
           <Typography variant="h6" className="text-white mb-4">
-            Sign up now and get 10% off your first booking
+            {token
+              ? "Get 10% off your First Booking"
+              : "Sign up now and get 10% off your first booking"}
           </Typography>
           <Link
             className="text-decoration-none text-white"
             to={token ? "/planner" : "Sign-In"}
           >
             <Button variant="contained" color="secondary" size="large">
-              Sign In Today
+              {token ? "Planner" : "Sign In Today"}
             </Button>
           </Link>
         </div>
