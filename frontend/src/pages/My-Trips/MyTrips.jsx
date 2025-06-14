@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../components/Layout/Layout";
+import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Container, Row, Col, Card, Spinner, Alert, Badge } from "react-bootstrap";
-import { 
-  FaMapMarkedAlt, 
-  FaCalendarAlt, 
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Spinner,
+  Alert,
+  Badge,
+} from "react-bootstrap";
+import {
+  FaMapMarkedAlt,
+  FaCalendarAlt,
   FaPlaneDeparture,
   FaPlaneArrival,
   FaClock,
   FaStickyNote,
   FaTrash,
-  FaEdit
+  FaEdit,
 } from "react-icons/fa";
-import {Button} from "react-bootstrap"
+import { Button } from "react-bootstrap";
 import { motion } from "framer-motion";
-import "../styles/MyTrips.css";
+import "../../styles/MyTrips.css";
+import { Link } from "react-router-dom";
 
 const MyTrips = () => {
   const token = useSelector((state) => state.auth.token);
@@ -42,12 +51,27 @@ const MyTrips = () => {
     }
   };
 
+  const deleteTrip = async (id) => {
+    try {
+      await axios.delete(`${url}/trip/delete-trip`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: { tripId: id },
+      });
+
+      fetchTrips();
+    } catch (error) {
+      setError("Failed to delete trips");
+    }
+  };
+
   useEffect(() => {
     fetchTrips();
   }, []);
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    const options = { year: "numeric", month: "short", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
@@ -78,10 +102,7 @@ const MyTrips = () => {
             )}
 
             {error && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <Alert variant="danger" className="text-center">
                   {error}
                 </Alert>
@@ -118,38 +139,45 @@ const MyTrips = () => {
                           <Card.Title className="trip-title">
                             {trip.title}
                             {trip.isDefault && (
-                              <Badge bg="primary" className="ms-2">Default</Badge>
+                              <Badge bg="primary" className="ms-2">
+                                Default
+                              </Badge>
                             )}
                           </Card.Title>
                           <div>
-                            <Button variant="link" className="p-0 me-2 text-primary">
-                              <FaEdit size={14} />
-                            </Button>
-                            <Button variant="link" className="p-0 text-danger">
-                              <FaTrash size={14} />
+                            <Button
+                              onClick={() => deleteTrip(trip._id)}
+                              variant="link"
+                              className="p-0 text-danger"
+                            >
+                              <FaTrash size={20} />
                             </Button>
                           </div>
                         </div>
-                        
+
                         <div className="trip-detail">
                           <FaMapMarkedAlt className="trip-icon" />
                           <span className="trip-text">{trip.destination}</span>
                         </div>
-                        
+
                         <div className="trip-detail">
                           <FaCalendarAlt className="trip-icon" />
                           <span className="trip-text">
-                            {formatDate(trip.startDate)} - {formatDate(trip.endDate)}
+                            {formatDate(trip.startDate)} -{" "}
+                            {formatDate(trip.endDate)}
                           </span>
                         </div>
-                        
+
                         <div className="trip-detail">
                           <FaClock className="trip-icon" />
                           <span className="trip-text">
-                            <strong>{trip.duration} day{trip.duration !== 1 ? 's' : ''}</strong>
+                            <strong>
+                              {trip.duration} day
+                              {trip.duration !== 1 ? "s" : ""}
+                            </strong>
                           </span>
                         </div>
-                        
+
                         {trip.notes && (
                           <div className="trip-detail mt-3">
                             <FaStickyNote className="trip-icon" />
@@ -158,6 +186,12 @@ const MyTrips = () => {
                             </div>
                           </div>
                         )}
+
+                        <div className="trip-info mt-3">
+                          <Link to={`/view-info/${trip._id}`}>
+                            <Button>View Info</Button>
+                          </Link>
+                        </div>
                       </Card.Body>
                     </Card>
                   </motion.div>

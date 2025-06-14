@@ -1,0 +1,117 @@
+/* Trip Info Card */
+.trip-info-card {
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(to right, #f8f9fa, #ffffff);
+}
+
+.trip-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.trip-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.trip-detail {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.detail-icon {
+  margin-right: 10px;
+  color: #3498db;
+  font-size: 1.2rem;
+}
+
+.detail-label {
+  font-weight: 600;
+  margin-right: 5px;
+  color: #495057;
+}
+
+.detail-value {
+  color: #212529;
+}
+
+.trip-notes {
+  background-color: #f8f9fa;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+}
+
+/* Collaborators Grid */
+.collaborators-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+}
+
+.collaborator-card {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.collaborator-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Expenses Grid */
+.expenses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0.75rem;
+}
+
+.expense-card {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.expense-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.expense-amount {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+.category-badge {
+  font-size: 0.7rem;
+  border: 1px solid #dee2e6;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .trip-details-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .collaborators-grid,
+  .expenses-grid {
+    grid-template-columns: 1fr;
+  }
+}

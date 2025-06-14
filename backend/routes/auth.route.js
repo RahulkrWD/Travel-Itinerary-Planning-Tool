@@ -1,6 +1,6 @@
 const express = require("express");
 const authController = require("../controllers/auth.controller");
-const userController = require("../controllers/user.controler")
+const userController = require("../controllers/user.controler");
 const authMiddleware = require("../middleware/auth.middleware");
 const rateLimit = require("express-rate-limit");
 const router = express.Router();
@@ -25,7 +25,15 @@ router.get("/user", authMiddleware, userController.getUser);
 router.patch("/user", authMiddleware, userController.updateUser);
 router.post("/address", authMiddleware, userController.addAddress);
 router.get("/address", authMiddleware, userController.getAddress);
-router.delete("/address/:addressId", authMiddleware, userController.deleteAddress);
-router.patch("/address/:addressId", authMiddleware, userController.updateAddress);
+router.delete(
+  "/address/:addressId",
+  authMiddleware,
+  userController.deleteAddress
+);
+router.patch(
+  "/address/:addressId",
+  authMiddleware,
+  userController.updateAddress
+);
 
 module.exports = router;

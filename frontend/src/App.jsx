@@ -7,10 +7,12 @@ import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
 import HowItWorks from "./pages/HowItWorks";
 import Pricing from "./pages/Pricing";
-import MyTrips from "./pages/MyTrips";
+import MyTrips from "./pages/My-Trips/MyTrips";
 import PlannerPage from "./pages/PlannerPage";
 import ProfilePage from "./pages/ProfilePages/ProfilePage";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
+import ViewInfo from "./pages/My-Trips/ViewInfo";
+import RespondTo from "./pages/My-Trips/RespondTo";
 function App() {
   return (
     <Routes>
@@ -23,6 +25,8 @@ function App() {
       <Route path="/planner" element={<PlannerPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/view-info/:tripId" element={<ViewInfo />} />
+      <Route path="/respond/:id" element={<RespondTo />} />
     </Routes>
   );
 }

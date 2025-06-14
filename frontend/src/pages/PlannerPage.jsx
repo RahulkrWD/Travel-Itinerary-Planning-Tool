@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
-import Layout from '../components/Layout/Layout';
-import { Container, Card, Form, Button, FloatingLabel, Alert } from 'react-bootstrap';
-import { FaPlane, FaPlus } from 'react-icons/fa';
-import { motion } from 'framer-motion';
-import '../styles/PlannerPage.css';
-import { useSelector } from 'react-redux';
+import React, { useState } from "react";
+import Layout from "../components/Layout/Layout";
+import {
+  Container,
+  Card,
+  Form,
+  Button,
+  FloatingLabel,
+  Alert,
+} from "react-bootstrap";
+import { FaPlane, FaPlus } from "react-icons/fa";
+import { motion } from "framer-motion";
+import "../styles/PlannerPage.css";
+import { useSelector } from "react-redux";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const PlannerPage = () => {
   const token = useSelector((state) => state.auth.token);
@@ -14,11 +21,11 @@ const PlannerPage = () => {
   const url = import.meta.env.VITE_API_URL;
 
   const [trip, setTrip] = useState({
-    title: '',
-    destination: '',
-    startDate: '',
-    endDate: '',
-    notes: ''
+    title: "",
+    destination: "",
+    startDate: "",
+    endDate: "",
+    notes: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -26,23 +33,23 @@ const PlannerPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setTrip(prev => ({ ...prev, [name]: value }));
+    setTrip((prev) => ({ ...prev, [name]: value }));
     // Clear field-specific error
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
   const validateDates = () => {
     const newErrors = {};
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
 
     if (trip.startDate && trip.startDate < today) {
-      newErrors.startDate = 'Start date cannot be in the past';
+      newErrors.startDate = "Start date cannot be in the past";
     }
 
     if (trip.endDate && trip.startDate && trip.endDate < trip.startDate) {
-      newErrors.endDate = 'End date must be after start date';
+      newErrors.endDate = "End date must be after start date";
     }
 
     setErrors(newErrors);
@@ -61,14 +68,17 @@ const PlannerPage = () => {
     try {
       await axios.post(`${url}/trip/add-trip`, tripData, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       setSuccess(true);
-      navigate("/my-trips")
+      navigate("/my-trips");
       setErrors({});
     } catch (error) {
-      console.error("Error creating trip:", error.response?.data || error.message);
+      console.error(
+        "Error creating trip:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -77,12 +87,15 @@ const PlannerPage = () => {
     setSuccess(false);
 
     if (!trip.title) {
-      setErrors(prev => ({ ...prev, title: 'Trip title is required' }));
+      setErrors((prev) => ({ ...prev, title: "Trip title is required" }));
       return;
     }
 
     if (!trip.destination) {
-      setErrors(prev => ({ ...prev, destination: 'Destination is required' }));
+      setErrors((prev) => ({
+        ...prev,
+        destination: "Destination is required",
+      }));
       return;
     }
 
@@ -90,25 +103,28 @@ const PlannerPage = () => {
 
     const duration = calculateDuration();
     if (duration < 1) {
-      setErrors(prev => ({ ...prev, endDate: 'Minimum trip duration is 1 day' }));
+      setErrors((prev) => ({
+        ...prev,
+        endDate: "Minimum trip duration is 1 day",
+      }));
       return;
     }
 
     const tripData = {
       ...trip,
       duration,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     await createTrip(tripData);
 
     // Reset form
     setTrip({
-      title: '',
-      destination: '',
-      startDate: '',
-      endDate: '',
-      notes: ''
+      title: "",
+      destination: "",
+      startDate: "",
+      endDate: "",
+      notes: "",
     });
   };
 
@@ -121,7 +137,10 @@ const PlannerPage = () => {
           transition={{ duration: 0.5 }}
           className="d-flex justify-content-center"
         >
-          <Card className="shadow-sm" style={{ maxWidth: '600px', width: '100%' }}>
+          <Card
+            className="shadow-sm"
+            style={{ maxWidth: "600px", width: "100%" }}
+          >
             <Card.Body>
               <Card.Title className="text-center mb-4">
                 <FaPlane className="me-2" />
@@ -135,7 +154,11 @@ const PlannerPage = () => {
               )}
 
               <Form onSubmit={handleSubmit}>
-                <FloatingLabel controlId="title" label="Trip Title" className="mb-3">
+                <FloatingLabel
+                  controlId="title"
+                  label="Trip Title"
+                  className="mb-3"
+                >
                   <Form.Control
                     type="text"
                     name="title"
@@ -149,7 +172,11 @@ const PlannerPage = () => {
                   </Form.Control.Feedback>
                 </FloatingLabel>
 
-                <FloatingLabel controlId="destination" label="Destination" className="mb-3">
+                <FloatingLabel
+                  controlId="destination"
+                  label="Destination"
+                  className="mb-3"
+                >
                   <Form.Control
                     type="text"
                     name="destination"
@@ -171,7 +198,7 @@ const PlannerPage = () => {
                         name="startDate"
                         value={trip.startDate}
                         onChange={handleInputChange}
-                        min={new Date().toISOString().split('T')[0]}
+                        min={new Date().toISOString().split("T")[0]}
                         isInvalid={!!errors.startDate}
                       />
                       <Form.Control.Feedback type="invalid">
@@ -186,7 +213,10 @@ const PlannerPage = () => {
                         name="endDate"
                         value={trip.endDate}
                         onChange={handleInputChange}
-                        min={trip.startDate || new Date().toISOString().split('T')[0]}
+                        min={
+                          trip.startDate ||
+                          new Date().toISOString().split("T")[0]
+                        }
                         isInvalid={!!errors.endDate}
                       />
                       <Form.Control.Feedback type="invalid">
@@ -198,7 +228,8 @@ const PlannerPage = () => {
 
                 {trip.startDate && trip.endDate && (
                   <div className="mb-3 text-muted">
-                    Trip Duration: {calculateDuration()} day{calculateDuration() !== 1 ? 's' : ''}
+                    Trip Duration: {calculateDuration()} day
+                    {calculateDuration() !== 1 ? "s" : ""}
                   </div>
                 )}
 
@@ -209,7 +240,7 @@ const PlannerPage = () => {
                     value={trip.notes}
                     onChange={handleInputChange}
                     placeholder="Any special plans or reminders"
-                    style={{ height: '100px' }}
+                    style={{ height: "100px" }}
                   />
                 </FloatingLabel>
 

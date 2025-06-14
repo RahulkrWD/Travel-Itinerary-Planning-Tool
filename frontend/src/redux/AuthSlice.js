@@ -19,9 +19,12 @@ export const generateOTP = createAsyncThunk(
 // Verify OTP
 export const verifyOTP = createAsyncThunk(
   "auth/verifyOTP",
-  async ({email, otp}, { rejectWithValue }) => {
+  async ({ email, otp }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(`${url}/auth/verify-otp`, {email, otp});
+      const { data } = await axios.post(`${url}/auth/verify-otp`, {
+        email,
+        otp,
+      });
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -42,27 +45,26 @@ export const signup = createAsyncThunk(
   }
 );
 
-export const login  = createAsyncThunk(
+export const login = createAsyncThunk(
   "auth/login",
-  async (userData, {rejectWithValue, dispatch}) =>{
+  async (userData, { rejectWithValue, dispatch }) => {
     try {
       const { data } = await axios.post(`${url}/auth/login`, userData);
       dispatch(setUser(data));
       return data;
     } catch (error) {
-      return rejectWithValue(error.response?.data)
+      return rejectWithValue(error.response?.data);
     }
   }
-)
+);
 
 const initialState = {
   loading: false,
   error: null,
   otpSent: false,
   otpVerified: false,
-  token: JSON.parse(sessionStorage.getItem("authToken"))|| null,
+  token: JSON.parse(sessionStorage.getItem("authToken")) || null,
 };
-
 
 const authSlice = createSlice({
   name: "auth",
@@ -83,74 +85,73 @@ const authSlice = createSlice({
       state.token = action.payload.token;
     },
     logout: (state) => {
-      sessionStorage.removeItem('authToken');
+      sessionStorage.removeItem("authToken");
       state.token = null;
       state.loading = false;
       state.error = null;
     },
-
   },
   extraReducers: (builder) => {
     builder
-    // Generate OTP cases
-     .addCase(generateOTP.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-      state.otpSent = false;
-    })
-    .addCase(generateOTP.fulfilled, (state) => {
-      state.loading = false;
-      state.otpSent = true;
-    })
-    .addCase(generateOTP.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload?.message || "Failed to send OTP";
-    })
+      // Generate OTP cases
+      .addCase(generateOTP.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.otpSent = false;
+      })
+      .addCase(generateOTP.fulfilled, (state) => {
+        state.loading = false;
+        state.otpSent = true;
+      })
+      .addCase(generateOTP.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.message || "Failed to send OTP";
+      })
 
-    // Verify OTP cases
-    .addCase(verifyOTP.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-      state.otpVerified = false;
-    })
-    .addCase(verifyOTP.fulfilled, (state) => {
-      state.loading = false;
-      state.otpVerified = true;
-    })
-    .addCase(verifyOTP.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload?.message || "Failed to verify OTP";
-    })
-     // Signup cases
-     .addCase(signup.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    })
-    .addCase(signup.fulfilled, (state, action) => {
-      state.loading = false;
-      state.token = action.payload.token;
-    })
-    .addCase(signup.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload?.message || "Failed to register user";
-    })
+      // Verify OTP cases
+      .addCase(verifyOTP.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.otpVerified = false;
+      })
+      .addCase(verifyOTP.fulfilled, (state) => {
+        state.loading = false;
+        state.otpVerified = true;
+      })
+      .addCase(verifyOTP.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.message || "Failed to verify OTP";
+      })
+      // Signup cases
+      .addCase(signup.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(signup.fulfilled, (state, action) => {
+        state.loading = false;
+        state.token = action.payload.token;
+      })
+      .addCase(signup.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.message || "Failed to register user";
+      })
 
-    // login cases
-    .addCase(login.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    })
-    .addCase(login.fulfilled, (state, action) => {
-      state.loading = false;
-      state.token = action.payload.token;
-    })
-    .addCase(login.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload?.message || "Failed to login user";
-    })
-
+      // login cases
+      .addCase(login.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.loading = false;
+        state.token = action.payload.token;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.message || "Failed to login user";
+      });
   },
 });
 
-export const { resetAuthState, clearError, setUser, logout } = authSlice.actions;
+export const { resetAuthState, clearError, setUser, logout } =
+  authSlice.actions;
 export default authSlice.reducer;

@@ -6,8 +6,7 @@ const nodemailer = require("nodemailer");
 const generateToken = (user) => {
   return jwt.sign(
     { userId: user._id, role: user.role, email: user.email },
-    process.env.JWT_SECRET,
-    { expiresIn: "1h" }
+    process.env.JWT_SECRET
   );
 };
 const transporter = nodemailer.createTransport({
@@ -165,9 +164,9 @@ const forgotPassword = async (req, res) => {
     // check user exists or not
     const { email } = req.body;
     if (!email) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: "Email is required" 
+        message: "Email is required",
       });
     }
     const user = await userModel.findOne({ email });

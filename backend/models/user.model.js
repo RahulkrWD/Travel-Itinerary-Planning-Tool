@@ -15,10 +15,10 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   bio: {
-    type: String
+    type: String,
   },
   phone: {
-    type: Number
+    type: Number,
   },
   role: {
     type: String,

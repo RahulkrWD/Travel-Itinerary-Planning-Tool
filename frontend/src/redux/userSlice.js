@@ -2,90 +2,112 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 const url = import.meta.env.VITE_API_URL;
 
-export const userProfile = createAsyncThunk("user/profile", async (token, { rejectWithValue }) => {
-  try {
-    const response = await axios.get(`${url}/auth/user`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response.data);
+export const userProfile = createAsyncThunk(
+  "user/profile",
+  async (token, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${url}/auth/user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
-});
+);
 
-export const updateProfile = createAsyncThunk("user/updateProfile", async ({token, userData}, { rejectWithValue }) => {
-  try {
-    const response = await axios.patch(`${url}/auth/user`, userData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response.data);
+export const updateProfile = createAsyncThunk(
+  "user/updateProfile",
+  async ({ token, userData }, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(`${url}/auth/user`, userData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
-});
+);
 
-export const getAddress = createAsyncThunk("user/getAddress", async (token, { rejectWithValue }) => {
-  try {
-    const response = await axios.get(`${url}/auth/address`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response.data);
+export const getAddress = createAsyncThunk(
+  "user/getAddress",
+  async (token, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${url}/auth/address`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
-});
+);
 
-export const addAddress = createAsyncThunk("user/addAddress", async ({token, address}, { rejectWithValue }) => {
-  try {
-    const response = await axios.post(`${url}/auth/address`, address, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response.data);
+export const addAddress = createAsyncThunk(
+  "user/addAddress",
+  async ({ token, address }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${url}/auth/address`, address, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
-});
+);
 
-export const updateAddress = createAsyncThunk("user/updateAddress", async ({token, addressId, address}, { rejectWithValue }) => {
-  try {
-    const response = await axios.patch(`${url}/auth/address/${addressId}`, address, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response.data);
+export const updateAddress = createAsyncThunk(
+  "user/updateAddress",
+  async ({ token, addressId, address }, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(
+        `${url}/auth/address/${addressId}`,
+        address,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
-});
+);
 
-export const deleteAddress = createAsyncThunk("user/deleteAddress", async ({token, addressId}, { rejectWithValue }) => {
-  try {
-    const response = await axios.delete(`${url}/auth/address/${addressId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response.data);
+export const deleteAddress = createAsyncThunk(
+  "user/deleteAddress",
+  async ({ token, addressId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`${url}/auth/address/${addressId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
   }
-});
+);
 
 const initialState = {
   profile: null,
   loading: false,
   error: null,
   addresses: [],
-  success: false
+  success: false,
 };
 
 const userSlice = createSlice({
@@ -96,12 +118,11 @@ const userSlice = createSlice({
       .addCase(userProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
-
       })
       .addCase(userProfile.fulfilled, (state, action) => {
         state.loading = false;
         state.profile = action.payload;
-        state.success = true
+        state.success = true;
       })
       .addCase(userProfile.rejected, (state, action) => {
         state.loading = false;
@@ -114,7 +135,7 @@ const userSlice = createSlice({
       .addCase(updateProfile.fulfilled, (state, action) => {
         state.loading = false;
         state.profile = action.payload;
-        state.success = true
+        state.success = true;
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.loading = false;
@@ -127,7 +148,7 @@ const userSlice = createSlice({
       .addCase(addAddress.fulfilled, (state, action) => {
         state.loading = false;
         state.addresses = action.payload;
-        state.success = true
+        state.success = true;
       })
       .addCase(addAddress.rejected, (state, action) => {
         state.loading = false;
@@ -140,7 +161,7 @@ const userSlice = createSlice({
       .addCase(getAddress.fulfilled, (state, action) => {
         state.loading = false;
         state.addresses = action.payload;
-        state.success = true
+        state.success = true;
       })
       .addCase(getAddress.rejected, (state, action) => {
         state.loading = false;
@@ -153,7 +174,7 @@ const userSlice = createSlice({
       .addCase(updateAddress.fulfilled, (state, action) => {
         state.loading = false;
         state.addresses = action.payload;
-        state.success = true
+        state.success = true;
       })
       .addCase(updateAddress.rejected, (state, action) => {
         state.loading = false;
@@ -166,16 +187,12 @@ const userSlice = createSlice({
       .addCase(deleteAddress.fulfilled, (state, action) => {
         state.loading = false;
         state.addresses = action.payload;
-        state.success = true
+        state.success = true;
       })
       .addCase(deleteAddress.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || "Failed to delete address";
-      })
-    }
-
-})
+      });
+  },
+});
 export default userSlice.reducer;
-  
-
-
