@@ -43,13 +43,13 @@ const ProfilePage = () => {
     (state) => state.user
   );
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  useEffect(()=>{
-    if(!token) {
-      return navigate("/login")
+  useEffect(() => {
+    if (!token) {
+      return navigate("/login");
     }
-  })
+  });
 
   // Modal states
   const [showProfileModal, setShowProfileModal] = useState(false);
@@ -97,7 +97,9 @@ const ProfilePage = () => {
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     try {
-      const result = await dispatch(updateProfile({ token, userData: profileForm }));
+      const result = await dispatch(
+        updateProfile({ token, userData: profileForm })
+      );
       if (result.payload?.success) {
         setSuccessMessage("Profile updated successfully!");
         setShowProfileModal(false);
@@ -126,11 +128,11 @@ const ProfilePage = () => {
         // Add new address
         result = await dispatch(addAddress({ token, address: addressForm }));
       }
-      
+
       if (result.payload?.success) {
         setSuccessMessage(
-          addressForm._id 
-            ? "Address updated successfully!" 
+          addressForm._id
+            ? "Address updated successfully!"
             : "Address added successfully!"
         );
         setShowAddressModal(false);
@@ -222,7 +224,11 @@ const ProfilePage = () => {
           transition={{ duration: 0.5 }}
         >
           {successMessage && (
-            <Alert variant="success" onClose={() => setSuccessMessage("")} dismissible>
+            <Alert
+              variant="success"
+              onClose={() => setSuccessMessage("")}
+              dismissible
+            >
               {successMessage}
             </Alert>
           )}
@@ -252,7 +258,9 @@ const ProfilePage = () => {
                         </div>
                       </motion.div>
                       <h3>{profile?.data?.name}</h3>
-                      {profile?.data?.bio && <p className="text-muted">{profile.data.bio}</p>}
+                      {profile?.data?.bio && (
+                        <p className="text-muted">{profile.data.bio}</p>
+                      )}
 
                       <div className="profile-info mt-4">
                         <p>
@@ -300,10 +308,8 @@ const ProfilePage = () => {
 
                       <Row className="g-4">
                         {addresses?.data?.length > 0 ? (
-                          
                           addresses.data.map((address) => (
                             <Col md={6} key={address._id}>
-                              
                               <motion.div
                                 whileHover={{ y: -5 }}
                                 className="address-card"
@@ -339,9 +345,7 @@ const ProfilePage = () => {
                                           className="text-danger"
                                           onClick={() =>
                                             handleDeleteAddress(address._id)
-                                            
                                           }
-                                          
                                         >
                                           <FaTrash />
                                         </Button>
@@ -532,7 +536,10 @@ const ProfilePage = () => {
                     type="number"
                     value={addressForm.pinCode}
                     onChange={(e) =>
-                      setAddressForm({ ...addressForm, pinCode: e.target.value })
+                      setAddressForm({
+                        ...addressForm,
+                        pinCode: e.target.value,
+                      })
                     }
                     required
                   />
