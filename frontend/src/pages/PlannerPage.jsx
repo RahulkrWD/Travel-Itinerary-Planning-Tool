@@ -110,6 +110,14 @@ const PlannerPage = () => {
       return;
     }
 
+    if (!trip.notes) {
+      setErrors((prev) => ({
+        ...prev,
+        notes: "Notes is required",
+      }));
+      return;
+    }
+
     const tripData = {
       ...trip,
       duration,
@@ -233,7 +241,7 @@ const PlannerPage = () => {
                   </div>
                 )}
 
-                <FloatingLabel controlId="notes" label="Notes (Optional)">
+                <FloatingLabel controlId="notes" label="Notes">
                   <Form.Control
                     as="textarea"
                     name="notes"
@@ -241,6 +249,7 @@ const PlannerPage = () => {
                     onChange={handleInputChange}
                     placeholder="Any special plans or reminders"
                     style={{ height: "100px" }}
+                    isInvalid={!!errors.notes}
                   />
                 </FloatingLabel>
 
