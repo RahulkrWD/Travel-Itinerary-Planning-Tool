@@ -1,52 +1,52 @@
-# ✈️ Travel Itinerary Planning Tool
+# Travel Itinerary Planning Tool
 
 A full-stack Travel Planner App to manage your trips, collaborate with friends, and track expenses in a simple and interactive way.
 
 ---
 
-## 🔗 Live Demo
+## Live Demo
 
-🌐 **Frontend**: [https://travel-itinerary-planning-tool.vercel.app/](https://travel-itinerary-planning-tool.vercel.app/)
+ **Frontend**: [https://travel-itinerary-planning-tool.vercel.app/](https://travel-itinerary-planning-tool.vercel.app/)
 
 ---
 
-## 🚀 Features
+## Features
 
-### 🔐 Authentication
+### Authentication
 
 - Signup and login using email/password with OTP verification
 - JWT-based secure routes for protected APIs
 
-### 🧳 Trip Management
+### Trip Management
 
 - Add, view, and delete trips
 - View detailed trip info (destination, duration, notes, cost)
 - Auto-calculates duration from start and end dates
 - Auto-updates total trip cost based on added expenses
 
-### 👥 Collaboration
+### Collaboration
 
 - Invite users to collaborate on a trip via email
 - Collaborators can accept or reject invitations
 - Real-time tracking of invite status
 
-### 💰 Expense Tracking
+### Expense Tracking
 
 - Add expenses by category (Food, Travel, Accommodation, Shopping, Other)
 - Each expense is tied to a specific trip
 - Track how much each trip costs
 - `totalCost` updates dynamically with every new expense
 
-### 📱 Responsive UI
+### Responsive UI
 
 - Clean and modern design
 - Mobile-friendly and works on all screen sizes
 
 ---
 
-## 📁 Tech Stack
+## Tech Stack
 
-### 🧠 Frontend
+### Frontend
 
 - React.js
 - React-Bootstrap
@@ -55,7 +55,7 @@ A full-stack Travel Planner App to manage your trips, collaborate with friends, 
 - Axios
 - Framer Motion
 
-### 🛠 Backend
+### Backend
 
 - Node.js
 - Express.js
@@ -66,7 +66,7 @@ A full-stack Travel Planner App to manage your trips, collaborate with friends, 
 
 ---
 
-## 🛠 How to Use Locally
+## How to Use Locally
 
 ### 1. Clone the Repository
 
